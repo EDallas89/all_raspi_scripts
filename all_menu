@@ -1,6 +1,6 @@
 #!/bin/bash
 
-ask=`zenity --list --title="Ada LoveLace Menu" --text="Seleccione la acción que desea realizar" --print-column="2" --column="icon" --column="action" "↺" "Reiniciar" "📷" "Cámara" "🞋" "Calibrador" "🖉 " "Abrir OpenBoard" "🗙" "Cerrar OpenBoard" "🖫" "Guardar ficheros del OpenBoard" "🗁 " "Cargar ficheros en OpenBoard" --width=275 --height=287 --hide-header --window-icon=/usr/local/bin/nur_icon.png`
+ask=`zenity --list --title="Ada LoveLace Menu" --text="Seleccione la acción que desea realizar" --print-column="2" --column="icon" --column="action" "↺" "Reiniciar" "📷" "Cámara" "🞋" "Calibrador" "🖉 " "Abrir OpenBoard" "🗙" "Cerrar OpenBoard" --width=275 --height=222 --hide-header --window-icon=/usr/local/bin/nur_icon.png`
 
 if [ "$ask" == "Reiniciar" ]; then
   texto="¿Seguro que quieres <span weight=\"bold\" foreground=\"red\">reiniciar</span>?"
@@ -28,71 +28,4 @@ fi
 if [ "$ask" == "Cerrar OpenBoard" ]; then
   pkill openboard
 fi
-
-if [ "$ask" == "Guardar ficheros del OpenBoard" ]; then
-  usb_name=$(ls /run/media/operador)
-  usb_openboard=/run/media/operador/$usb_name/OpenBoard
-  local_dir=/home/operador/.local/share/OpenBoard/document
-
-  if [ $usb_name ]; then
-    (
-    sleep 1
-    echo 20
-    echo "# Cerrando OpenBoard"; sleep 1; pkill openboard
-    
-    echo 40
-    echo "# Buscando el directorio OpenBoard en el usb"; sleep 1;
-    if [ ! -d $usb_openboard ];then
-      mkdir $usb_openboard
-    fi
-
-    echo 60 
-    echo "# Moviendo los ficheros de OpenBoard al usb"; sleep 1; mv $local_dir/* $usb_openboard
-
-    echo 80
-    echo "# Desmontando usb para una extracción segura"; sleep 1; sudo umount -f /run/media/operador/$usb_name
-
-    echo 100
-    echo "# Guardado completado"
-    ) | zenity --progress --width=300 --title="Guardando ..." --text="Iniciando el guardado" --percentage=0 
-
-  else
-    zenity --error --title="Error" --width=300 --text="No se ha encontrado ningún usb conectado."
-    all_menu
-  fi
-fi
-
-if [ "$ask" == "Cargar ficheros en OpenBoard" ]; then
-  usb_name=$(ls /run/media/operador)
-  usb_openboard=/run/media/operador/$usb_name/OpenBoard
-  local_dir=/home/operador/.local/share/OpenBoard/document
-
-  if [ $usb_name ]; then
-    (
-    sleep 1
-    echo 20
-    echo "# Cerrando OpenBoard"; sleep 1; pkill openboard
-
-    echo 40
-    echo "# Buscando el directorio OpenBoard en el usb"; sleep 1;
-    if [ -d $usb_openboard ];then
-      cd $usb_openboard
-      echo 60
-      echo "# Filtrando los ficheros propios de OpenBoard"; sleep 1;
-      find . -type f  ! -name "*.xml" ! -name "*.rdf" ! -name "*.svg" ! -name "*.png" ! -name "*.jpg" -delete
-      
-      echo 80
-      echo "# Moviendo los ficheros del usb a OpenBoard"; sleep 1;
-      mv * $local_dir
-    fi
-    echo 100
-    echo "# Carga completada"
-    ) |  zenity --progress --width=300 --title="Cargando ..." --text="Iniciando la carga" --percentage=0 
-
-  else
-    zenity --error --title="Error" --width=300 --text="No se ha encontrado ningún usb conectado."
-    all_menu
-  fi
-fi
-
 exit 0

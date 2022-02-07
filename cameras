@@ -1,0 +1,2 @@
+#!/bin/bash
+bash -c 'for device in /dev/video*; do echo $(mplayer tv:// -tv driver=v4l2:device=$device:width=1280:height=720:fps=30:outfmt=yuy2) 2&>/dev/null & done'

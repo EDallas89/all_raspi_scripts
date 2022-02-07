@@ -1,0 +1,44 @@
+#!/bin/bash
+device=$(xinput_calibrator --list)
+device=$(sed -n 's/.*Device\s\"\(.*\)\".*/\1/p' <<< $device)
+
+#reset xinput matrix
+#xinput set-prop "$device" 'Coordinate Transformation Matrix' 1 0 0 0 1 0 0 0 1
+xinput set-prop "$device" "libinput Calibration Matrix"  1 0 0 0 1 0 0 0 1
+
+out=$(xinput_calibrator -v --misclick 0)
+echo out="$out"
+
+device_name=$(sed -n 's/.*MatchProduct[^"]*"\(.*\)".*/\1/p' <<< $out)
+
+echo device_name=$device_name
+
+wtot=$(sed -n 's/.*max_x=\([0-9]*\).*/\1/p' <<< $out)
+htot=$(sed -n 's/.*max_y=\([0-9]*\).*/\1/p' <<< $out)
+
+minx=$(sed -n 's/.*MinX\"\s\"\([-]\?[0-9]*\).*/\1/p' <<< $out)
+maxx=$(sed -n 's/.*MaxX\"\s\"\([-]\?[0-9]*\).*/\1/p' <<< $out)
+miny=$(sed -n 's/.*MinY\"\s\"\([-]\?[0-9]*\).*/\1/p' <<< $out)
+maxy=$(sed -n 's/.*MaxY\"\s\"\([-]\?[0-9]*\).*/\1/p' <<< $out)
+
+wtouch=$(bc <<< "$maxx - $minx")
+htouch=$(bc <<< "$maxy - $miny")
+
+c0=$(echo $(bc -l <<< "$wtot / $wtouch") | awk '{printf "%f", $0}' )
+c1=$(echo $(bc -l <<< "$(( $minx * -1 )) / $wtouch") | awk '{printf "%f", $0}' )
+c2=$(echo $(bc -l <<< "$htot / $htouch") | awk '{printf "%f", $0}' )
+c3=$(echo $(bc -l <<< "$(( $miny * -1 )) / $htouch") | awk '{printf "%f", $0}' )
+
+tf_matrix="$c0 0 $c1 0 $c2 $c3 0 0 1"
+
+#alter the setting for now
+#xinput set-prop "$device" 'Coordinate Transformation Matrix' $tf_matrix
+xinput set-prop "$device" "libinput Calibration Matrix"  $tf_matrix
+
+echo "To make this permanent, save the following content under '/etc/X11/xorg.conf.d/98-screen-calibration.conf' or '/usr/share/X11/xorg.conf.d/98-screen-calibration.conf'"
+echo "Section \"InputClass\""
+echo "	Identifier \"calibration\""
+echo "	MatchProduct \"$device\""
+#echo "	Option \"TransformationMatrix\" \"$tf_matrix\""
+echo "	Option \"CalibrationMatrix\" \"$tf_matrix\""
+echo "EndSection"

@@ -1,0 +1,22 @@
+#!/bin/bash
+### BEGIN INIT INFO
+ # Provides:          kiosk
+ # Required-Start:    $remote_fs $syslog
+ # Required-Stop:     $remote_fs $syslog
+ # Default-Start:     2 3 4 5
+ # Default-Stop:      0 1 6
+ # Short-Description: Simple script to start a kiosk at boot
+ ### END INIT INFO
+
+while true; do
+  kiosk_username=""
+  kiosk_password=""
+  if [[ -f ~/.kiosk_credentials ]]; then
+    kiosk_username="`grep '^username=' ~/.kiosk_credentials | sed 's/username=//'`"
+    kiosk_password="`grep '^password=' ~/.kiosk_credentials | sed 's/password=//'`"
+  fi
+  [[ "$KIOSK_PERSISTENT_CREDENTIALS" == "true" ]] || rm ~/.kiosk_credentials
+  chromium --temp-profile --password-store=basic --kiosk "$KIOSK_URL?username=$kiosk_username&password=$kiosk_password"
+done
+
+ exit 0 

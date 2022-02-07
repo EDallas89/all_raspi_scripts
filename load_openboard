@@ -1,0 +1,14 @@
+#!/bin/bash
+
+usb_name=$(ls /run/media/operador)
+usb_openboard=/run/media/operador/$usb_name/OpenBoard
+local_dir=/home/operador/.local/share/OpenBoard/document
+
+if [ $usb_name ]
+  pkill openboard
+  if [ -d $usb_openboard ];then
+    cd $usb_openboard
+    find . -type f  ! -name "*.xml" ! -name "*.rdf" ! -name "*.svg" ! -name "*.png" ! -name "*.jpg" -delete 
+    mv * $local_dir
+  fi
+fi

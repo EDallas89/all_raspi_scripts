@@ -1,0 +1,14 @@
+#!/bin/bash
+
+usb_name=$(ls /run/media/operador)
+usb_openboard=/run/media/operador/$usb_name/OpenBoard
+local_dir=/home/operador/.local/share/OpenBoard/document
+
+if [ $usb_name ]; then
+  pkill openboard
+  if [ ! -d $usb_openboard ];then
+    mkdir $usb_openboard
+  fi
+  mv $local_dir/* $usb_openboard
+  sudo umount -f /run/media/operador/$usb_name
+fi

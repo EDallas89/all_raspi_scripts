@@ -1,0 +1,6 @@
+#!/bin/bash
+
+status=$(pgrep -x openboard)
+if [ ! $status ]; then
+  openboard
+fi

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-ask=`zenity --list --title="Ada LoveLace Menu" --text="Seleccione la acción que desea realizar" --print-column="2" --column="icon" --column="action" "↺" "Reiniciar" "📷" "Cámara" "🞋" "Calibrador" "🖉 " "Abrir OpenBoard" "🗙" "Cerrar OpenBoard" --width=275 --height=222 --hide-header --window-icon=/usr/local/bin/nur_icon.png`
+ask=`zenity --list --title="Ada LoveLace Menu" --text="Seleccione la acción que desea realizar" --print-column="2" --column="icon" --column="action" "↺" "Reiniciar" "📷" "Cámara" "🞋" "Calibrador" "🖉 " "Abrir OpenBoard" "🗙" "Cerrar OpenBoard" "🎞" "Abrir Netflix" "📺" "Abrir RTVE" "🗙" "Cerrar Netflix/RTVE" --width=273 --height=312 --hide-header --window-icon=/usr/local/bin/nur_icon.png`
 
 if [ "$ask" == "Reiniciar" ]; then
   texto="¿Seguro que quieres <span weight=\"bold\" foreground=\"red\">reiniciar</span>?"
@@ -28,4 +28,17 @@ fi
 if [ "$ask" == "Cerrar OpenBoard" ]; then
   pkill openboard
 fi
+
+if [ "$ask" == "Abrir Netflix" ]; then
+  firefox -kiosk https://www.netflix.com/es/
+fi
+
+if [ "$ask" == "Abrir RTVE" ]; then
+  firefox -kiosk https://www.rtve.es/play/
+fi
+
+if [ "$ask" == "Cerrar Netflix/RTVE" ]; then
+  pkill -f firefox
+fi
+
 exit 0

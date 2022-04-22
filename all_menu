@@ -1,6 +1,6 @@
 #!/bin/bash
 
-ask=`zenity --list --title="Ada LoveLace Menu" --text="Seleccione la acción que desea realizar" --print-column="2" --column="icon" --column="action" "↺" "Reiniciar" "📷" "Cámara" "🞋" "Calibrador" "🖉 " "Abrir OpenBoard" "🗙" "Cerrar OpenBoard" "🎞" "Abrir Netflix" "📺" "Abrir RTVE" "🗙" "Cerrar Netflix/RTVE" --width=273 --height=312 --hide-header --window-icon=/usr/local/bin/nur_icon.png`
+ask=`zenity --list --title="Ada LoveLace Menu" --text="Seleccione la acción que desea realizar" --print-column="2" --column="icon" --column="action" "↺" "Reiniciar" "📷" "Cámara" "🞋" "Calibrador" "🖉 " "Abrir OpenBoard" "🗙" "Cerrar OpenBoard" "🎞" "Abrir Netflix" "📺" "Abrir RTVE" "🎙" "Iniciar Conferencia" "🗙" "Cerrar Navegador Externo" --width=273 --height=346 --hide-header --window-icon=/usr/local/bin/nur_icon.png`
 
 if [ "$ask" == "Reiniciar" ]; then
   texto="¿Seguro que quieres <span weight=\"bold\" foreground=\"red\">reiniciar</span>?"
@@ -37,7 +37,13 @@ if [ "$ask" == "Abrir RTVE" ]; then
   firefox -kiosk https://www.rtve.es/play/
 fi
 
-if [ "$ask" == "Cerrar Netflix/RTVE" ]; then
+if [ "$ask" == "Iniciar Conferencia" ]; then
+  hostname=$(cat /etc/hostname)
+  url="${hostname}#userInfo.displayName=\"aula $hostname\"" 
+  firefox -kiosk https://live.minuryana.com/$url
+fi  
+
+if [ "$ask" == "Cerrar Navegador Externo" ]; then
   pkill -f firefox
 fi
 

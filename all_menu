@@ -1,6 +1,6 @@
 #!/bin/bash
 
-ask=`zenity --list --title="Ada LoveLace Menu" --text="Seleccione la acción que desea realizar" --print-column="2" --column="icon" --column="action" "↺" "Reiniciar" "📷" "Cámara" "🞋" "Calibrador" "🖉 " "Abrir OpenBoard" "🗙" "Cerrar OpenBoard" "🎞" "Abrir Netflix" "📺" "Abrir RTVE" "🎙" "Iniciar Conferencia" --width=273 --height=316 --hide-header --window-icon=/usr/local/bin/nur_icon.png`
+ask=`zenity --list --title="Ada LoveLace Menu" --text="Seleccione la acción que desea realizar" --print-column="2" --column="icon" --column="action" "↺" "Reiniciar" "📷" "Cámara" "🞋" "Calibrador" "🖉 " "Abrir OpenBoard" "🗙" "Cerrar OpenBoard" "🎞" "Abrir Netflix" "📺" "Abrir RTVE" "♫" "Abrir Spotify" "🎙" "Iniciar Conferencia" --width=273 --height=342 --hide-header --window-icon=/usr/local/bin/nur_icon.png`
 
 if [ "$ask" == "Reiniciar" ]; then
   texto="¿Seguro que quieres <span weight=\"bold\" foreground=\"red\">reiniciar</span>?"
@@ -42,5 +42,9 @@ if [ "$ask" == "Iniciar Conferencia" ]; then
   url="${hostname}#userInfo.displayName=\"aula $hostname\"" 
   chromium --kiosk "https://live.minuryana.com/$url"
 fi  
+
+if [ "$ask" == "Abrir Spotify" ]; then
+  chromium --kiosk "https://www.spotify.com/es/"
+fi
 
 exit 0

@@ -30,4 +30,4 @@ echo "Modificando fichero /usr/local/bin/chromium-armhf"
 
 echo "Reiniciando..."
 
- reboot
+# reboot

@@ -36,11 +36,11 @@ fi
 if [ "$ask" == "Iniciar Conferencia" ]; then
   hostname=$(cat /etc/hostname)
   url="${hostname}#userInfo.displayName=\"aula $hostname\"" 
-  chromium --kiosk "https://live.minuryana.com/$url"
+  chromium --kiosk --incognito "https://live.minuryana.com/$url"
 fi  
 
 if [ "$ask" == "Abrir Spotify" ]; then
-  chromium --kiosk "https://www.spotify.com/es/"
+  chromium --kiosk --incognito "https://www.spotify.com/es/"
 fi
 
 exit 0

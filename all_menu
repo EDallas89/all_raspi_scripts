@@ -1,6 +1,6 @@
 #!/bin/bash
 
-ask=`zenity --list --title="Ada LoveLace Menu" --text="Seleccione la acción que desea realizar" --print-column="2" --column="icon" --column="action" "↺" "Reiniciar" "📷" "Cámara" "🞋" "Calibrador" "🖉 " "Abrir OpenBoard" "🗙" "Cerrar OpenBoard" "🎞" "Abrir Netflix" "📺" "Abrir RTVE" "♫" "Abrir Spotify" "🎙" "Iniciar Conferencia" --width=273 --height=342 --hide-header --window-icon=/usr/local/bin/nur_icon.png`
+ask=`zenity --list --title="Ada LoveLace Menu" --text="Seleccione la acción que desea realizar" --print-column="2" --column="icon" --column="action" "↺" "Reiniciar" "📷" "Cámara" "🞋" "Calibrador" "🖉 " "Abrir OpenBoard" "🗙" "Cerrar OpenBoard" "📺" "Abrir Plataformas de Video" "♫" "Abrir Spotify" "🎙" "Iniciar Conferencia" --width=273 --height=302 --hide-header --window-icon=/usr/local/bin/nur_icon.png`
 
 if [ "$ask" == "Reiniciar" ]; then
   texto="¿Seguro que quieres <span weight=\"bold\" foreground=\"red\">reiniciar</span>?"
@@ -29,12 +29,8 @@ if [ "$ask" == "Cerrar OpenBoard" ]; then
   pkill openboard
 fi
 
-if [ "$ask" == "Abrir Netflix" ]; then
-  chromium --kiosk "https://www.netflix.com/es/"
-fi
-
-if [ "$ask" == "Abrir RTVE" ]; then
-  chromium --kiosk "https://www.rtve.es/play/"
+if [ "$ask" == "Abrir Plataformas de Video" ]; then
+  chromium-armhf 
 fi
 
 if [ "$ask" == "Iniciar Conferencia" ]; then

@@ -1,33 +1,44 @@
 #!/bin/bash
 
-echo "Instalando chromium-docker..."
+FILE=/home/operador/eva01.txt
 
- sudo pacman -Syy
+if find "$FILE";
 
- sudo pacman -S --noconfirm inetutils
+then
 
- sudo pacman -S --noconfirm chromium-docker
+	echo "$FILE file exists"
 
-echo "Creando grupo docker..."
+else
+	touch /home/operador/eva01.txt
 
- sudo groupadd docker
+	echo "Instalando chromium-docker..."
 
- sudo usermod -a -G docker operador
+ 	 sudo pacman -Syy
 
-#echo "Haciendo pull del docker..."
+ 	 sudo pacman -S --noconfirm inetutils
 
-# docker pull hthiemann/docker-chromium-armhf
+ 	 sudo pacman -S --noconfirm chromium-docker
 
-echo "Modificando fichero /usr/local/bin/chromium-armhf"
+	echo "Creando grupo docker..."
 
- sudo rm /usr/local/bin/chromium-armhf
+ 	 sudo groupadd docker
 
- sudo mv chromium-armhf /usr/local/bin/
+ 	 sudo usermod -a -G docker operador
 
- sudo chown operador:docker /usr/local/bin/chromium-armhf
+#	echo "Haciendo pull del docker..."
 
- sudo chmod 770 /usr/local/bin/chromium-armhf
+# 	 docker pull hthiemann/docker-chromium-armhf
 
-echo "Reiniciando..."
+	echo "Modificando fichero /usr/local/bin/chromium-armhf"
 
-# reboot
+ 	 sudo mv chromium_works chromium-armhf
+
+ 	 sudo chown operador:docker /usr/local/bin/chromium-armhf
+
+ 	 sudo chmod 770 /usr/local/bin/chromium-armhf
+
+#	echo "Reiniciando..."
+
+# 	 reboot
+
+fi
